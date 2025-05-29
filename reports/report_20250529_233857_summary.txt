@@ -1,0 +1,3 @@
+Files checked: 3
+Functions checked: 15
+Violations found: 56

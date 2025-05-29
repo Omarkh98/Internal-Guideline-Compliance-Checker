@@ -1,0 +1,21 @@
+{
+  "name": "internal_guideline_compliance_checker",
+  "description": "Analyzes Python code for internal guideline violations and generates a compliance report.",
+  "input_type": "python_file",
+  "output_type": "compliance_report",
+  "entry_point": "main.py",
+  "reports_folder": "reports",
+  "cli_options": {
+    "--json": "Outputs the violations report in JSON format to the reports folder",
+    "--summary": "Prints a summary of checked functions and violations count"
+  },
+  "functions": [
+    {
+      "name": "check_compliance",
+      "description": "Returns a report on whether the file meets internal coding guidelines.",
+      "arguments": {
+        "file_path": "Path to the Python file to analyze"
+      }
+    }
+  ]
+}

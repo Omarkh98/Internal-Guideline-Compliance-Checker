@@ -1,0 +1,2 @@
+Functions checked: 3
+Violations found: 37

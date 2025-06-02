@@ -1,0 +1,4 @@
+<configuration>
+    <setting key="mode" value="debug" />
+    <setting key="retries" value="3" />
+</configuration>

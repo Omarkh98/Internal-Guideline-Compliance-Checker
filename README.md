@@ -1,12 +1,14 @@
 # Internal Guideline Compliance Checker
 
-A Python tool to analyze source code files for internal coding guideline violations, helping teams maintain consistent, clean, and compliant codebases.
+A multi-language tool to analyze source code files for internal coding guideline violations, helping teams maintain consistent, clean, and compliant codebases.
 
 ---
 
 ## Features
 
-- Checks Python file(s) or entire directories recursively for violations against your internal guidelines.
+- Checks source code files in **Python**, **Java**, and **XML**.
+- Recursively scans directories for supported files.
+- Applies node-level and tree-level compliance rules tailored for each language.
 - Supports multiple output formats:
   - Detailed JSON reports
   - Summary reports
@@ -14,6 +16,18 @@ A Python tool to analyze source code files for internal coding guideline violati
 - Generates timestamped reports saved in a `reports/` folder.
 - Easily integrates with CI/CD pipelines or LLM-based tool orchestrators.
 - CLI-invokable and Python-callable for flexible automation.
+
+
+
+## Supported Languages & Rules
+
+| Language | File Extensions | Key Compliance Checks                                |
+|----------|-----------------|-----------------------------------------------------|
+| Python   | `.py`           | Syntax errors, naming conventions, docstrings, function length, code style |
+| Java     | `.java`         | Package declarations, Javadoc presence, method length, logger usage, wildcard imports |
+| XML      | `.xml`          | Well-formedness, project metadata (name, description, url), tag and attribute conventions |
+
+
 
 ## Usage
 Run the checker from the command line:
@@ -30,12 +44,13 @@ Where `<path>` is a path to a Python file or a directory containing Python files
 3. **--md**, **-m**: Output a Markdown formatted report. Saved in `reports/`.
 
 ## Examples
-1. Check a single file and print violations to the console:
+1.	Check a single Python, Java, or XML file and print violations to the console:
 
 ```bash
 python main.py path/to/file.py
+python main.py path/to/file.java
+python main.py path/to/file.xml
 ```
-
 2. Check a whole directory recursively and get a JSON report:
 
 ```bash

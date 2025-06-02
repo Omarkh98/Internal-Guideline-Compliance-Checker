@@ -1,0 +1,11 @@
+<!-- Violation Summary:
+❌ Root tag is not allowed
+❌ Missing required child element
+❌ Inline comments inside nested structures
+-->
+
+<wrongRoot>
+    <config>
+        <entry>value</entry> <!-- shouldn't comment inside nested nodes -->
+    </config>
+</wrongRoot>

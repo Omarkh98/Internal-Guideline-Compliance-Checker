@@ -1,5 +1,3 @@
-import pytest
-import ast
 import sys
 import os
 
@@ -7,8 +5,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import ast
 import pytest
-from compliance_checker import apply_compliance_rules
-from config.guidelines import (
+from compliance_checker import apply_python_compliance_rules
+from config.python_guidelines import (
     rule_function_names_snake_case,
     rule_limit_function_length,
 )
@@ -21,11 +19,11 @@ def get_first_function_node(code: str) -> ast.FunctionDef:
             return node
     raise ValueError("No function found")
 
-# === Integration tests for apply_compliance_rules ===
+# === Integration tests for apply_python_compliance_rules ===
 
 def test_detects_snake_case_violation():
     code = "def BadName():\n    pass"
-    violations = apply_compliance_rules(code)
+    violations = apply_python_compliance_rules(code)
     for v in violations:
         print(type(v), v)
     assert any("snake_case" in v["message"] for v in violations)
@@ -33,7 +31,7 @@ def test_detects_snake_case_violation():
 def test_detects_long_function_violation():
     body = "\n".join(["    pass"] * 60)
     code = f"def long_func():\n{body}"
-    violations = apply_compliance_rules(code)
+    violations = apply_python_compliance_rules(code)
     assert any(
     isinstance(v, dict) and "message" in v and "too long" in v["message"]
     for v in violations
@@ -41,13 +39,13 @@ def test_detects_long_function_violation():
 
 def test_function_missing_docstring():
     code = "def foo():\n    pass"
-    violations = apply_compliance_rules(code)
+    violations = apply_python_compliance_rules(code)
     print("Violations:", violations)
     assert any("docstring" in v["message"].lower() for v in violations)
 
 def test_detects_multiple_violations():
     code = "def BadFunc():\n" + "\n".join(["    pass"] * 55)
-    violations = apply_compliance_rules(code)
+    violations = apply_python_compliance_rules(code)
     assert len(violations) >= 2
 
 # === Direct unit tests for rule functions ===

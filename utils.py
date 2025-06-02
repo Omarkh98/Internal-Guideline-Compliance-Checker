@@ -1,5 +1,6 @@
-from compliance_checker import apply_compliance_rules
-import ast
+from compliance_checker import (apply_python_compliance_rules,
+                                apply_java_compliance_rules,
+                                apply_xml_compliance_rules)
 import os
 
 def print_violations(violations: list[dict]):
@@ -11,27 +12,33 @@ def print_violations(violations: list[dict]):
         seen.add(key)
         line_info = f"Line {v.get('line', '?')}"
         print(f"- {v['id']} ({line_info}): {v['message']}")
+        
+def apply_compliance_rules_with_count(code: str, filetype: str = "py") -> tuple[list[dict], int]:
+    if filetype == "py":
+        violations = apply_python_compliance_rules(code)
+        function_count = code.count("def ")
+    elif filetype == "java":
+        violations = apply_java_compliance_rules(code)
+        function_count = code.count("void ") + code.count("public ") + code.count("private ")
+    elif filetype == "xml":
+        violations = apply_xml_compliance_rules(code)
+        function_count = 1
+    else:
+        violations = [{"id": "UNSUPPORTED", "message": f"Unsupported file type: {filetype}", "line": 0}]
+        function_count = 0
 
-def apply_compliance_rules_with_count(code: str):
-    tree = ast.parse(code)
-    # Count functions in the code
-    function_count = sum(isinstance(node, ast.FunctionDef) for node in ast.walk(tree))
-    violations = apply_compliance_rules(code)
     return violations, function_count
 
-
-def gather_py_files(path: str) -> list[str]:
-    if os.path.isfile(path) and path.endswith(".py"):
-        return [path]
+def gather_supported_files(path: str, extensions: tuple[str, ...] = (".py", ".java", ".xml")) -> list[str]:
+    files = []
+    if os.path.isfile(path) and path.endswith(extensions):
+        files.append(path)
     elif os.path.isdir(path):
-        py_files = []
-        for root, _, files in os.walk(path):
-            for file in files:
-                if file.endswith(".py"):
-                    py_files.append(os.path.join(root, file))
-        return py_files
-    else:
-        return []
+        for root, _, filenames in os.walk(path):
+            for fname in filenames:
+                if fname.endswith(extensions):
+                    files.append(os.path.join(root, fname))
+    return files
     
 def generate_markdown_report(violations: list[dict], py_files, total_functions: int) -> str:
     md = f"# Internal Guidelines Compliance Report\n\n"

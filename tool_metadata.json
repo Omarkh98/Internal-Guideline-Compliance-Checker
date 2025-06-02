@@ -1,7 +1,8 @@
 {
   "name": "internal_guideline_compliance_checker",
-  "description": "Analyzes Python files for violations against internal coding guidelines and generates a compliance report.",
-  "input_type": "python_file_or_directory",
+  "display_name": "Internal Guideline Compliance Checker",
+  "description": "Analyzes Python, Java, and XML files for violations against internal coding guidelines.",
+  "input_type": "code_file_or_directory",
   "output_type": "compliance_report",
   "entry_point": "main.py",
   "cli_options": {
